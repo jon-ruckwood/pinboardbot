@@ -18,4 +18,4 @@ libraryDependencies ++= Seq(
 
 fork in run := true
 
-javaOptions += "-DpinboardbotDeploymentConfig=/Users/jon_r/Documents/projects/deploy/local/pinboardbot.properties"
+javaOptions += "-DpinboardbotDeploymentConfig=../deploy/local/pinboardbot.properties"
