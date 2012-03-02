@@ -12,7 +12,6 @@ object TwitterClient extends App {
 	twitter.setOAuthConsumer(config[String]("oauthConsumerKey"), 
 		config[String]("oauthConsumerSecret")) 
 
-	// TODO: Externalise tokens
 	val token = new AccessToken(config[String]("accessToken"),
 		config[String]("accessTokenSecret")) 
 	twitter.setOAuthAccessToken(token)
