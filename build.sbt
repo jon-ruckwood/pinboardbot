@@ -19,3 +19,5 @@ libraryDependencies ++= Seq(
 fork in run := true
 
 javaOptions += "-DpinboardbotDeploymentConfig=../deploy/local/pinboardbot.properties"
+
+javaOptions += "-Dlogback.configurationFile=../deploy/local/logback.xml"
