@@ -2,6 +2,7 @@ import org.slf4j.LoggerFactory
 import twitter4j._
 import twitter4j.auth.AccessToken
 import org.streum.configrity._
+import scala.collection.JavaConversions._
 
 object TwitterClient extends App {
 	val log = LoggerFactory.getLogger(getClass)
@@ -9,36 +10,23 @@ object TwitterClient extends App {
 	val config = Configuration.load(System.getProperty("pinboardbotDeploymentConfig"))
 	val oauthConsumerKey = config[String]("oauthConsumerKey")
 	val oauthConsumerSecret = config[String]("oauthConsumerSecret")
-	val accessToken = config[String]("accessToken")
-	val accessTokenSecret = config[String]("accessTokenSecret")
+	val userAccessToken = config[String]("accessToken")
+	val userAccessTokenSecret = config[String]("accessTokenSecret")
 
-	val twitterStream = new TwitterStreamFactory().getInstance()
-	twitterStream.setOAuthConsumer(oauthConsumerKey, oauthConsumerSecret)
+	val twitter = new TwitterFactory().getInstance()
+	twitter.setOAuthConsumer(oauthConsumerKey, oauthConsumerSecret)
 
-	val token = new AccessToken(accessToken, accessTokenSecret) 
-	twitterStream.setOAuthAccessToken(token)
+	val accessToken = new AccessToken(userAccessToken, userAccessTokenSecret)
+	twitter.setOAuthAccessToken(accessToken)
 
-	twitterStream.addListener(new StatusListener() {
-		def onStatus(status: Status) {
-			log.info("{} - '{}'", status.getUser().getName(), status.getText())
-		}
+	//val since = new Paging(170620191040999424L)
+	val mentions = twitter.getMentions()
 
-		def onDeletionNotice(notice: StatusDeletionNotice) {
-			// 
-		}
-
-		def onTrackLimitationNotice(numberOfLimitedStatuses: Int) {
-			// 
-		}
-
-		def onScrubGeo(userId: Long, upToStatusId: Long) {
-			//
-		}
-
-		def onException(ex: Exception) {
-			log.error("Exception: {}", ex)
-		}
-	})
-
-	twitterStream.sample()
+	mentions.foreach { status =>
+		log.info("Mention -> {}", 
+			Array(status.getId(), status.getUser().getScreenName(), 
+				status.getURLEntities(), status.getHashtagEntities())
+		)
+	}
+	
 }
