@@ -10,8 +10,7 @@ resolvers ++= Seq(
 
 
 libraryDependencies ++= Seq(
-	"org.slf4j" % "slf4j-api" % "1.6.4",
-	"ch.qos.logback" % "logback-classic" % "1.0.0" % "runtime",
+	"com.typesafe.akka" % "akka-actor" % "2.0",
 	"org.twitter4j" % "twitter4j-core" % "2.2.5",
 	"com.typesafe.config" % "config" % "0.3.0"
 )

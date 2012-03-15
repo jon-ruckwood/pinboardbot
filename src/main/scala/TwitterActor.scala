@@ -1,31 +1,43 @@
-import org.slf4j.LoggerFactory
 import twitter4j._
 import twitter4j.auth.AccessToken
-import scala.collection.JavaConversions._
+//import scala.collection.JavaConversions._
 import com.typesafe.config.ConfigFactory
+import akka.actor.Actor
+import akka.event.Logging
 
-object TwitterClient extends App {
-	val log = LoggerFactory.getLogger(getClass)
+import Messages.PollTwitter
 
-	val conf = ConfigFactory.load()
-	val oauthConsumerKey = conf.getString("oauthConsumerKey")
-	val oauthConsumerSecret = conf.getString("oauthConsumerSecret")
-	val userAccessToken = conf.getString("accessToken")
-	val userAccessTokenSecret = conf.getString("accessTokenSecret")	
-
+class TwitterActor extends Actor {
+	val log = Logging(context.system, this)
 	val twitter = new TwitterFactory().getInstance()
-	twitter.setOAuthConsumer(oauthConsumerKey, oauthConsumerSecret)
 
-	val accessToken = new AccessToken(userAccessToken, userAccessTokenSecret)
-	twitter.setOAuthAccessToken(accessToken)
+	override def preStart() = {
+		val conf = ConfigFactory.load()
 
-	val mentions = twitter.getMentions()
+		val oauthConsumerKey = conf.getString("oauthConsumerKey")
+		val oauthConsumerSecret = conf.getString("oauthConsumerSecret")
+		val userAccessToken = conf.getString("accessToken")
+		val userAccessTokenSecret = conf.getString("accessTokenSecret")	
 
-	mentions.foreach { status =>
-		log.info("Mention -> {}", 
-			Array(status.getId(), status.getUser().getScreenName(), 
-				status.getURLEntities(), status.getHashtagEntities())
-		)
+		twitter.setOAuthConsumer(oauthConsumerKey, oauthConsumerSecret)
+
+		val accessToken = new AccessToken(userAccessToken, userAccessTokenSecret)
+		twitter.setOAuthAccessToken(accessToken)
+
 	}
+
+	def receive = {
+		case PollTwitter => log.info("Polling Twitter. Tweet-tweet!")
+		case _ => log.info("Received unknown message")
+	}
+
+	// val mentions = twitter.getMentions()
+
+	// mentions.foreach { status =>
+	// 	log.info("Mention -> " + 
+	// 		Array(status.getId(), status.getUser().getScreenName(), 
+	// 			status.getURLEntities(), status.getHashtagEntities())
+	// 	)
+	// }
 	
 }
