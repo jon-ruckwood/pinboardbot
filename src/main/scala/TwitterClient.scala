@@ -13,14 +13,12 @@ object TwitterClient extends App {
 	val userAccessToken = conf.getString("accessToken")
 	val userAccessTokenSecret = conf.getString("accessTokenSecret")	
 
-
 	val twitter = new TwitterFactory().getInstance()
 	twitter.setOAuthConsumer(oauthConsumerKey, oauthConsumerSecret)
 
 	val accessToken = new AccessToken(userAccessToken, userAccessTokenSecret)
 	twitter.setOAuthAccessToken(accessToken)
 
-	//val since = new Paging(170620191040999424L)
 	val mentions = twitter.getMentions()
 
 	mentions.foreach { status =>
