@@ -1,17 +1,18 @@
 import org.slf4j.LoggerFactory
 import twitter4j._
 import twitter4j.auth.AccessToken
-import org.streum.configrity._
 import scala.collection.JavaConversions._
+import com.typesafe.config.ConfigFactory
 
 object TwitterClient extends App {
 	val log = LoggerFactory.getLogger(getClass)
 
-	val config = Configuration.load(System.getProperty("pinboardbotDeploymentConfig"))
-	val oauthConsumerKey = config[String]("oauthConsumerKey")
-	val oauthConsumerSecret = config[String]("oauthConsumerSecret")
-	val userAccessToken = config[String]("accessToken")
-	val userAccessTokenSecret = config[String]("accessTokenSecret")
+	val conf = ConfigFactory.load()
+	val oauthConsumerKey = conf.getString("oauthConsumerKey")
+	val oauthConsumerSecret = conf.getString("oauthConsumerSecret")
+	val userAccessToken = conf.getString("accessToken")
+	val userAccessTokenSecret = conf.getString("accessTokenSecret")	
+
 
 	val twitter = new TwitterFactory().getInstance()
 	twitter.setOAuthConsumer(oauthConsumerKey, oauthConsumerSecret)
