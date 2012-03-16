@@ -12,6 +12,8 @@ class TwitterActor extends Actor {
 	val twitter = new TwitterFactory().getInstance()
 
 	override def preStart() = {
+		log.info("Initialising Twitter client")
+
 		val conf = ConfigFactory.load()
 
 		val oauthConsumerKey = conf.getString("oauthConsumerKey")
