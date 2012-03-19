@@ -5,6 +5,7 @@ import akka.actor.Actor
 import akka.event.Logging
 
 import Messages.PollTwitter
+import Messages.Tweet
 
 class TwitterActor extends Actor {
 	val log = Logging(context.system, this)
@@ -29,7 +30,9 @@ class TwitterActor extends Actor {
 	}
 
 	def receive = {
-		case PollTwitter => log.info("Polling Twitter. Tweet-tweet!")
+		case PollTwitter => 
+			log.info("Polling Twitter. Tweet-tweet!")
+			sender ! Tweet(94135, "http://www.selfdotlearn.net", Set("fail", "to-read"))
 		case _ => log.info("Received unknown message")
 	}
 }

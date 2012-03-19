@@ -2,6 +2,7 @@ import org.scalatest.Spec
 import org.scalatest.GivenWhenThen
 import scala.collection.mutable.Stack
 
+// TODO: Remove this example
 class ExampleSpec extends Spec with GivenWhenThen {
 
 	describe("A Stack") {
