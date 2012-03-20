@@ -12,20 +12,16 @@ object Main extends App {
 	val system = ActorSystem("PinboardBotSystem")
 	val master = system.actorOf(Props[Master], name = "master")
 
-	master ! Start
+	val cancellable = system.scheduler.schedule(0 seconds,  10 seconds, master, PollTwitter) 
 
 	class Master extends Actor {
 		val log = Logging(context.system, this)
 
 		val twitterActor = system.actorOf(Props[TwitterActor], name = "twitterActor")
-		var cancellable : Cancellable = _
-
+		
 		def receive = {
-			case Start => 
-				cancellable = system.scheduler.schedule(0 seconds,  10 seconds, 
-					twitterActor, PollTwitter) 
-			case Tweet(id, url, tags) =>
-				log.info("Recieved tweet: " + id) 
+			case PollTwitter => twitterActor ! FetchTweets
+			case Tweet(id, url, tags) => log.info("Recieved tweet {}, {}, {}", id, url, tags) 
 			case _ => log.info("Received unknown message")
 		}
 	}
