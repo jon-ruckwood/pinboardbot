@@ -1,5 +1,4 @@
-import twitter4j._
-import twitter4j.auth.AccessToken
+import twitter4j.Twitter
 import com.typesafe.config.ConfigFactory
 import akka.actor.Actor
 import akka.event.Logging
@@ -14,20 +13,7 @@ class TwitterActor extends Actor {
 
 	override def preStart() = {
 		log.info("Initialising Twitter client")
-
-		val conf = ConfigFactory.load()
-
-		val oauthConsumerKey = conf.getString("oauthConsumerKey")
-		val oauthConsumerSecret = conf.getString("oauthConsumerSecret")
-		val userAccessToken = conf.getString("accessToken")
-		val userAccessTokenSecret = conf.getString("accessTokenSecret")	
-
-		twitter = new TwitterFactory().getInstance()
-		twitter.setOAuthConsumer(oauthConsumerKey, oauthConsumerSecret)
-
-		val accessToken = new AccessToken(userAccessToken, userAccessTokenSecret)
-		twitter.setOAuthAccessToken(accessToken)
-
+		twitter = TwitterClientFactory.getTwitter()
 	}
 
 	def receive = {
