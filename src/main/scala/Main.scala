@@ -4,6 +4,7 @@ import akka.util.duration._
 import akka.actor.Actor
 import akka.actor.Cancellable
 import akka.event.Logging
+import twitter.TwitterClientFactory
 
 import Messages._
 
@@ -18,12 +19,12 @@ object Main extends App {
 		val log = Logging(context.system, this)
 
 		val twitterActor = system.actorOf(Props(
-			new TwitterActor(TwitterClientFactory.getTwitter())), 
+			new TwitterActor(TwitterClientFactory.get())), 
 			name = "twitterActor")
 		
 		def receive = {
 			case PollTwitter => twitterActor ! FetchTweets
-			case Tweet(id, url, tags) => log.info("Recieved tweet {}, {}, {}", id, url, tags) 
+			case Mention(id, url, tags) => log.info("Recieved tweet {}, {}, {}", id, url, tags) 
 			case _ => log.info("Received unknown message")
 		}
 	}
