@@ -7,14 +7,8 @@ import scala.collection.immutable
 import Messages.FetchTweets
 import Messages.Tweet
 
-class TwitterActor extends Actor {
+class TwitterActor(val twitterClient: Twitter) extends Actor {
 	val log = Logging(context.system, this)
-	var twitter : Twitter = _ 
-
-	override def preStart() = {
-		log.info("Initialising Twitter client")
-		twitter = TwitterClientFactory.getTwitter()
-	}
 
 	def receive = {
 		case FetchTweets => 

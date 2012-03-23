@@ -17,7 +17,9 @@ object Main extends App {
 	class Master extends Actor {
 		val log = Logging(context.system, this)
 
-		val twitterActor = system.actorOf(Props[TwitterActor], name = "twitterActor")
+		val twitterActor = system.actorOf(Props(
+			new TwitterActor(TwitterClientFactory.getTwitter())), 
+			name = "twitterActor")
 		
 		def receive = {
 			case PollTwitter => twitterActor ! FetchTweets
