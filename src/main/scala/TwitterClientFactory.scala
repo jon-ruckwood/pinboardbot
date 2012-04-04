@@ -1,8 +1,9 @@
-import twitter4j.Twitter
-import twitter4j.TwitterFactory
+import twitter4j.{Twitter, TwitterFactory, Paging, Status}
 import twitter4j.auth.AccessToken
 import com.typesafe.config.ConfigFactory
 import scala.collection.immutable
+import scala.collection.mutable
+import scala.collection.JavaConversions._
 
 package twitter {
 	class Tweet(val id: Long, val url: String, val tags: Set[String])
@@ -12,12 +13,19 @@ package twitter {
 	}
 
 	class Twitter4JTwitterClient(val twitter: twitter4j.Twitter) extends TwitterClient {
-		override def fetchMentions(sinceTweetId: Long) = {
-			// TODO: Implement this
-			immutable.List(
-				new Tweet(1, "http://www.google.com", immutable.Set("android", "icecream")),
-				new Tweet(2, "http://www.apple.com", immutable.Set("ipad", "iphone"))
-			)
+		override def fetchMentions(sinceTweetId: Long = 1) = {
+			val since = new Paging(sinceTweetId)
+			val mentions = twitter.getMentions(since)
+			val tweets = new mutable.ListBuffer[Tweet]
+			mentions.foreach { status : Status =>
+				val id = status.getId()
+				val url = status.getURLEntities()(0).getExpandedURL().toString()
+				val tags = status.getHashtagEntities().map(_.getText()).toSet
+				
+				tweets += new Tweet(id, url, tags)
+			}
+			
+			tweets.toList
 		}
 	}
 

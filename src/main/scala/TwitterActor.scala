@@ -13,7 +13,9 @@ class TwitterActor(val twitterClient: TwitterClient) extends Actor {
 	def receive = {
 		case FetchTweets => 
 			log.info("Fetching Tweets from Twitter. Tweet-tweet!")
-			twitterClient.fetchMentions(sinceTweetId = 0).foreach { tweet => 
+
+			// TODO: Default isn't working for some reason...?
+			twitterClient.fetchMentions(1).foreach { tweet => 
 				// TODO: Cross terminology is confusing, have something domain specific?
 				sender ! Mention(tweet.id, tweet.url, tweet.tags)	
 			}
