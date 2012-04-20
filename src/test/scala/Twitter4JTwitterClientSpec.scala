@@ -27,7 +27,7 @@ class Twitter4JTwitterClientSpec extends FunSpec with GivenWhenThen with Mockito
 
 			when("mentions are fetched")
 
-			val mentions = client.fetchMentions(AnyUtcTimestamp)
+			val mentions = client.fetchMentions(AnyTweetId)
 
 			then("the returned list must be empty")
 

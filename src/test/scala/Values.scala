@@ -4,5 +4,6 @@
  */ 
 object Values {
 
-	val AnyUtcTimestamp = 1
+	// TODO: Randomise
+	val AnyTweetId = 1
 }
