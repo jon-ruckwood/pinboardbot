@@ -15,7 +15,7 @@ libraryDependencies ++= Seq(
 	"org.twitter4j" % "twitter4j-core" % "2.2.5",
 	"com.typesafe.config" % "config" % "0.3.0",
 	"org.scalatest" %% "scalatest" % "1.7.1" % "test",
-	"org.scalamock" %% "scalamock-scalatest-support" % "latest.integration" % "test"
+	"org.mockito" % "mockito-all" % "1.9.0" % "test"
 )
 
 fork in run := true
@@ -23,3 +23,5 @@ fork in run := true
 javaOptions += "-Dconfig.file=../deploy/local/pinboardbot.properties"
 
 javaOptions += "-Dlogback.configurationFile=../deploy/local/logback.xml"
+
+scalacOptions ++= Seq("-unchecked", "-deprecation")

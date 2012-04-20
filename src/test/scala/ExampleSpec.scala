@@ -1,9 +1,9 @@
-import org.scalatest.Spec
+import org.scalatest.FunSpec
 import org.scalatest.GivenWhenThen
 import scala.collection.mutable.Stack
 
 // TODO: Remove this example
-class ExampleSpec extends Spec with GivenWhenThen {
+class ExampleSpec extends FunSpec with GivenWhenThen {
 
 	describe("A Stack") {
 
