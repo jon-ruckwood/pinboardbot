@@ -1,6 +1,8 @@
 import java.{ util => ju, lang => jl }
 import scala.collection.immutable
-import twitter4j.Status
+import scala.collection.mutable
+import scala.collection.JavaConversions._
+import twitter4j.{Status, HashtagEntity}
 
 /**
  * Factory for objects useful for writing tests
@@ -25,7 +27,20 @@ object Prototype {
 	def twitterStatus(id: Long, urls: List[String], tags: List[String]) = {
 		new Status {
 			override def getId() = id
-			override def getHashtagEntities() = throw new jl.UnsupportedOperationException()
+
+			override def getHashtagEntities() = {
+				val entities = new mutable.ListBuffer[HashtagEntity]
+				tags.foreach { tag => 
+					val entity = new HashtagEntity {
+						// TODO: Override
+					}
+				}
+
+				// TODO: Return Java array
+
+			}
+			
+
 			override def getURLEntities() = throw new jl.UnsupportedOperationException()
 
 			override def compareTo(other: Status) = 0
