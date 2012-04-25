@@ -1,8 +1,8 @@
-import java.{ util => ju, lang => jl }
+import java.{ util => ju, lang => jl, net => jn }
 import scala.collection.immutable
 import scala.collection.mutable
 import scala.collection.JavaConversions._
-import twitter4j.{Status, HashtagEntity}
+import twitter4j.{Status, HashtagEntity, URLEntity}
 
 /**
  * Factory for objects useful for writing tests
@@ -20,28 +20,18 @@ object Prototype {
 	def singleItemJavaIterator[T](item: T) = {
 		val list = new ju.ArrayList[T]()
 		list.add(item)
+		
 		list.iterator()
 	}
 
-	// TODO: Add urls and tags into Status
 	def twitterStatus(id: Long, urls: List[String], tags: List[String]) = {
+		val hashtagEntities = getHashtagEntities(tags)	
+		val urlEntities = getURLEntities(urls)
+
 		new Status {
 			override def getId() = id
-
-			override def getHashtagEntities() = {
-				val entities = new mutable.ListBuffer[HashtagEntity]
-				tags.foreach { tag => 
-					val entity = new HashtagEntity {
-						// TODO: Override
-					}
-				}
-
-				// TODO: Return Java array
-
-			}
-			
-
-			override def getURLEntities() = throw new jl.UnsupportedOperationException()
+			override def getHashtagEntities() = hashtagEntities
+			override def getURLEntities() =  urlEntities
 
 			override def compareTo(other: Status) = 0
 
@@ -67,5 +57,39 @@ object Prototype {
 			override def getMediaEntities() = throw new jl.UnsupportedOperationException()
 			override def getUserMentionEntities() = throw new jl.UnsupportedOperationException()
 		}	
+	}
+
+	private def getHashtagEntities(tags: List[String]) = {
+		val hashtagEntities = new mutable.ListBuffer[HashtagEntity]
+		tags.foreach { tag => 
+			val entity = new HashtagEntity {
+				override def getText() = tag
+				override def getEnd() = throw new jl.UnsupportedOperationException()
+						override def getStart() = throw new jl.UnsupportedOperationException()
+			}
+
+			hashtagEntities += entity
+		}		
+
+		
+		hashtagEntities.toArray
+	}
+
+	private def getURLEntities(urls: List[String]) = {
+		val urlEntities = new mutable.ListBuffer[URLEntity]
+		urls.foreach { url =>
+			val entity = new URLEntity {
+				override def getExpandedURL() = new jn.URL(url)
+				override def getDisplayURL() = throw new jl.UnsupportedOperationException()
+				override def getEnd() = throw new jl.UnsupportedOperationException()
+				override def getStart() = throw new jl.UnsupportedOperationException()
+				override def getURL() = throw new jl.UnsupportedOperationException()
+
+			}
+			
+			urlEntities += entity
+		}
+	
+		urlEntities.toArray		
 	}
 }

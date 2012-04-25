@@ -42,11 +42,19 @@ class Twitter4JTwitterClientSpec extends FunSpec with GivenWhenThen with BeforeA
 
 			val status = twitterStatus(id = 1, urls = List("http://www.google.com"), tags = List("google", "search"))
 			BDDMockito.given(responseList.iterator()).willReturn(singleItemJavaIterator[Status](status))
+			BDDMockito.given(twitter.getMentions(any(classOf[Paging]))).willReturn(responseList)
+
+
+			val client = new Twitter4JTwitterClient(twitter)
 
 			when("mentions are fetched")
 
+			val mentions = client.fetchMentions(AnyTweetId)
 
 			then("the returned list contains the single mention")
+
+			// TODO: Assert on contents of tweet.
+			assert(mentions.size == 1)
 		}
 
 		it("Should return mentions since the specified Tweet Id") (pending)
