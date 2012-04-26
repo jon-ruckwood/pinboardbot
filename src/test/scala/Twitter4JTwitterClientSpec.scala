@@ -1,7 +1,9 @@
 import org.scalatest.{FunSpec, GivenWhenThen, BeforeAndAfterEach}
+import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.mock.MockitoSugar
 import org.mockito.BDDMockito
 import org.mockito.Matchers._
+import scala.collection.immutable
 
 import twitter4j.{Twitter, ResponseList, Paging, Status}
 import twitter.Twitter4JTwitterClient
@@ -9,7 +11,7 @@ import twitter.Twitter4JTwitterClient
 import Prototype._
 import Values._
 
-class Twitter4JTwitterClientSpec extends FunSpec with GivenWhenThen with BeforeAndAfterEach with MockitoSugar {
+class Twitter4JTwitterClientSpec extends FunSpec with GivenWhenThen with BeforeAndAfterEach with MockitoSugar with ShouldMatchers {
 	
 	var twitter: Twitter = _
 	var responseList: ResponseList[Status] = _
@@ -34,7 +36,7 @@ class Twitter4JTwitterClientSpec extends FunSpec with GivenWhenThen with BeforeA
 
 			then("the returned list must be empty")
 
-			assert(mentions.isEmpty)
+			mentions should be ('empty)
 		}
 
 		it("Should return single mention") {
@@ -53,8 +55,14 @@ class Twitter4JTwitterClientSpec extends FunSpec with GivenWhenThen with BeforeA
 
 			then("the returned list contains the single mention")
 
-			// TODO: Assert on contents of tweet.
-			assert(mentions.size == 1)
+			mentions should have length (1)
+
+			// TODO: Confusion over naming of tweet/mention. Reconcile this.
+			val mention = mentions(0)
+			mention.id should equal (1)
+			// Contains only matcher?
+			mention.url should equal ("http://www.google.com")
+			mention.tags should equal (immutable.Set("google", "search")) 
 		}
 
 		it("Should return mentions since the specified Tweet Id") (pending)
