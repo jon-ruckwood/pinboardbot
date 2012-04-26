@@ -15,10 +15,12 @@ import net.selfdotlearn.pinboardbot.test.Matchers._
 class Twitter4JTwitterClientSpec extends UnitTestSpec with TweetMatcher {
 	
 	var twitter: Twitter = _
+	var client: Twitter4JTwitterClient = _
 	var responseList: ResponseList[Status] = _
 
 	override def beforeEach() {
 		twitter = mock[Twitter]
+		client = new Twitter4JTwitterClient(twitter)
 		responseList = mock[ResponseList[Status]]
 	}
 
@@ -28,8 +30,6 @@ class Twitter4JTwitterClientSpec extends UnitTestSpec with TweetMatcher {
 
 			BDDMockito.given(responseList.iterator()).willReturn(emptyJavaIterator[Status]())
 			BDDMockito.given(twitter.getMentions(any(classOf[Paging]))).willReturn(responseList)
-
-			val client = new Twitter4JTwitterClient(twitter)
 
 			when("mentions are fetched")
 
@@ -46,9 +46,6 @@ class Twitter4JTwitterClientSpec extends UnitTestSpec with TweetMatcher {
 			val status = twitterStatus(id = 1, urls = List("http://www.google.com"), tags = List("google", "search"))
 			BDDMockito.given(responseList.iterator()).willReturn(singleItemJavaIterator[Status](status))
 			BDDMockito.given(twitter.getMentions(any(classOf[Paging]))).willReturn(responseList)
-
-
-			val client = new Twitter4JTwitterClient(twitter)
 
 			when("mentions are fetched")
 
