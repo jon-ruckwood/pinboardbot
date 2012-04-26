@@ -1,17 +1,16 @@
-import org.scalatest.{FunSpec, GivenWhenThen, BeforeAndAfterEach}
-import org.scalatest.matchers.ShouldMatchers
-import org.scalatest.mock.MockitoSugar
+import scala.collection.immutable
 import org.mockito.BDDMockito
 import org.mockito.Matchers._
-import scala.collection.immutable
 
 import twitter4j.{Twitter, ResponseList, Paging, Status}
 import twitter.Twitter4JTwitterClient
 
+import Specs.UnitTestSpec
 import Prototype._
 import Values._
+import Matchers._
 
-class Twitter4JTwitterClientSpec extends FunSpec with GivenWhenThen with BeforeAndAfterEach with MockitoSugar with ShouldMatchers {
+class Twitter4JTwitterClientSpec extends UnitTestSpec with TweetMatcher {
 	
 	var twitter: Twitter = _
 	var responseList: ResponseList[Status] = _
@@ -58,11 +57,13 @@ class Twitter4JTwitterClientSpec extends FunSpec with GivenWhenThen with BeforeA
 			mentions should have length (1)
 
 			// TODO: Confusion over naming of tweet/mention. Reconcile this.
-			val mention = mentions(0)
-			mention.id should equal (1)
-			// Contains only matcher?
-			mention.url should equal ("http://www.google.com")
-			mention.tags should equal (immutable.Set("google", "search")) 
+			val tweet = mentions(0)
+
+			tweet should have (
+				id (1),
+				url("http://www.google.com"),
+				tags(immutable.Set("google", "search"))
+			)
 		}
 
 		it("Should return mentions since the specified Tweet Id") (pending)
