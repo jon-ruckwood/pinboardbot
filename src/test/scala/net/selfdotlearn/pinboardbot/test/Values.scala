@@ -1,3 +1,4 @@
+package net.selfdotlearn.pinboardbot.test
 
 /**
  * Useful constants for tests

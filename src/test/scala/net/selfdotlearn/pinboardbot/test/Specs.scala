@@ -1,3 +1,5 @@
+package net.selfdotlearn.pinboardbot.test
+
 import org.scalatest.{FunSpec, GivenWhenThen, BeforeAndAfterEach}
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.mock.MockitoSugar

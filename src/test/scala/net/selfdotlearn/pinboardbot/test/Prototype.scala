@@ -1,3 +1,5 @@
+package net.selfdotlearn.pinboardbot.test
+
 import java.{ util => ju, lang => jl, net => jn }
 import scala.collection.immutable
 import scala.collection.mutable

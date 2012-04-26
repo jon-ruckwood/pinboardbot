@@ -1,12 +1,14 @@
+package net.selfdotlearn.pinboardbot
+
 import akka.actor.ActorSystem
 import akka.actor.Props
 import akka.util.duration._
 import akka.actor.Actor
 import akka.actor.Cancellable
 import akka.event.Logging
-import twitter.TwitterClientFactory
 
-import Messages._
+import net.selfdotlearn.pinboardbot.twitter.TwitterClientFactory
+import net.selfdotlearn.pinboardbot.Messages._
 
 object Main extends App {
 

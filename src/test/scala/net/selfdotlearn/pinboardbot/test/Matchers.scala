@@ -1,7 +1,9 @@
+package net.selfdotlearn.pinboardbot.test
+
 import org.scalatest.matchers.HavePropertyMatcher
 import org.scalatest.matchers.HavePropertyMatchResult	
 
-import twitter.Tweet	
+import net.selfdotlearn.pinboardbot.twitter.Tweet	
 
 object Matchers {
 	

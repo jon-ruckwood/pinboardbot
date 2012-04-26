@@ -1,3 +1,5 @@
+package net.selfdotlearn.pinboardbot
+
 import org.scalatest.FunSpec
 import org.scalatest.GivenWhenThen
 

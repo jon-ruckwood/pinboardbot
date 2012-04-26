@@ -1,3 +1,4 @@
+package net.selfdotlearn.pinboardbot
 
 object Messages {
 

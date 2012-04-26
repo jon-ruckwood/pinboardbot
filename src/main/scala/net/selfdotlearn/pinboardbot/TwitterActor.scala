@@ -1,11 +1,12 @@
+package net.selfdotlearn.pinboardbot
+
 import com.typesafe.config.ConfigFactory
 import akka.actor.Actor
 import akka.event.Logging
 import scala.collection.immutable
-import twitter.TwitterClient
 
-import Messages.FetchTweets
-import Messages.Mention
+import net.selfdotlearn.pinboardbot.twitter.TwitterClient
+import net.selfdotlearn.pinboardbot.Messages.{FetchTweets, Mention}
 
 class TwitterActor(val twitterClient: TwitterClient) extends Actor {
 	val log = Logging(context.system, this)
