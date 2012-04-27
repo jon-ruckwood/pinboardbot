@@ -26,7 +26,7 @@ object Prototype {
 		list.iterator()
 	}
 
-	def twitterStatus(id: Long, urls: List[String], tags: List[String]) = {
+	def twitterStatus(id: Long = 1, urls: List[String] = List[String](), tags: List[String] = List[String]()) = {
 		val hashtagEntities = getHashtagEntities(tags)	
 		val urlEntities = getURLEntities(urls)
 
