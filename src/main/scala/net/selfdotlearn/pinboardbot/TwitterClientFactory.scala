@@ -8,7 +8,7 @@ import scala.collection.mutable
 import scala.collection.JavaConversions._
 
 package twitter {
-	class Tweet(val id: Long, val url: String, val tags: Set[String])
+	class Tweet(val id: Long, val url: Option[String], val tags: Set[String])
 
 	trait TwitterClient {
 		def fetchMentions(sinceTweetId: Long): immutable.List[Tweet]
@@ -21,13 +21,29 @@ package twitter {
 			val tweets = new mutable.ListBuffer[Tweet]
 			mentions.foreach { status : Status =>
 				val id = status.getId()
-				val url = status.getURLEntities()(0).getExpandedURL().toString()
+
+				val url = if (hasUrls(status)) {
+					Some(getFirstUrlAsString(status)) 
+				} else {
+					None
+				}
+
+				// val url = status.getURLEntities()(0).getExpandedURL().toString()
 				val tags = status.getHashtagEntities().map(_.getText()).toSet
 				
 				tweets += new Tweet(id, url, tags)
 			}
 			
 			tweets.toList
+		}
+
+		private def hasUrls(status: Status) = {
+			status.getURLEntities().length > 0
+		}
+
+		private def getFirstUrlAsString(status: Status) = {
+			val urlEntities = status.getURLEntities()
+			urlEntities(0).getExpandedURL().toString() 
 		}
 	}
 

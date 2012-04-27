@@ -16,7 +16,7 @@ object Matchers {
 				tweet.id)
 		}
 
-		def url(expected: String) = new HavePropertyMatcher[Tweet, String] {
+		def url(expected: Option[String]) = new HavePropertyMatcher[Tweet, Option[String]] {
 			def apply(tweet: Tweet) = HavePropertyMatchResult(
 				tweet.url == expected,
 				"url",

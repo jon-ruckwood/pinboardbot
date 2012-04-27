@@ -18,7 +18,8 @@ class TwitterActor(val twitterClient: TwitterClient) extends Actor {
 			// TODO: Default isn't working for some reason...?
 			twitterClient.fetchMentions(1).foreach { tweet => 
 				// TODO: Cross terminology is confusing, have something domain specific?
-				sender ! Mention(tweet.id, tweet.url, tweet.tags)	
+				// TODO: Handle else case
+				sender ! Mention(tweet.id, tweet.url.getOrElse(""), tweet.tags)	
 			}
 		case _ => log.info("Received unknown message")
 	}

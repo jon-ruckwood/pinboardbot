@@ -61,7 +61,7 @@ class Twitter4JTwitterClientSpec extends UnitTestSpec with TweetMatcher {
 			val tweet = mentions.head
 			tweet should have (
 				id (1),
-				url("http://www.google.com"),
+				url(Some("http://www.google.com")),
 				tags(immutable.Set("google", "search"))
 			)
 		}
@@ -85,7 +85,7 @@ class Twitter4JTwitterClientSpec extends UnitTestSpec with TweetMatcher {
 
 			val tweet = mentions.head
 			tweet should have (
-				url("http://www.google.com")
+				url(Some("http://www.google.com"))
 			)
 		}
 
@@ -109,7 +109,7 @@ class Twitter4JTwitterClientSpec extends UnitTestSpec with TweetMatcher {
 			// TODO: Consider returning an None (Option) for url?
 			val tweet = mentions.head
 			tweet should have (
-				url(""),
+				url(None),
 				tags(Set[String]())
 			)
 		}
