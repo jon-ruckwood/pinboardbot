@@ -1,7 +1,7 @@
 package net.selfdotlearn.pinboardbot
 
 import scala.collection.immutable
-import org.mockito.BDDMockito
+import org.mockito.{BDDMockito, Mockito}
 import org.mockito.Matchers._
 
 import twitter4j.{Twitter, ResponseList, Paging, Status}
@@ -106,7 +106,6 @@ class Twitter4JTwitterClientSpec extends UnitTestSpec with TweetMatcher {
 
 			and("the mention does not contain any urls and tags")
 
-			// TODO: Consider returning an None (Option) for url?
 			val tweet = mentions.head
 			tweet should have (
 				url(None),
@@ -114,6 +113,24 @@ class Twitter4JTwitterClientSpec extends UnitTestSpec with TweetMatcher {
 			)
 		}
 
-		it("Should return mentions since the specified Tweet Id") (pending)
+		it("Should return mentions since the specified Tweet Id") {
+			given("we specify a Tweet Id")
+
+			val sinceTweetId = 94135
+
+			BDDMockito.given(responseList.iterator()).willReturn(emptyJavaIterator[Status]())
+			BDDMockito.given(twitter.getMentions(any(classOf[Paging]))).willReturn(responseList)
+
+			when("mentions are fetched")
+
+			val mentions = client.fetchMentions(sinceTweetId)
+
+			then("the specified Tweet Id is passed onto the underlying client")
+
+			val expectedPaging = new Paging()
+			expectedPaging.setSinceId(sinceTweetId)
+			Mockito.verify(twitter).getMentions(expectedPaging)
+
+		}
 	}
 }
