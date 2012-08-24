@@ -90,7 +90,7 @@ class Twitter4JTwitterClientSpec extends UnitTestSpec with TweetMatcher {
 		}
 
 		it("Should be able to handle mentions without urls and tags") {
-			given("the underlying Twitter client returns a mention with out any urls and tags")
+			given("the underlying Twitter client returns a mention without any urls and tags")
 
 			val status = twitterStatus(id = 1)
 			BDDMockito.given(responseList.iterator()).willReturn(singleItemJavaIterator[Status](status))

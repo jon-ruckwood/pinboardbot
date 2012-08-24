@@ -28,7 +28,6 @@ package twitter {
 					None
 				}
 
-				// val url = status.getURLEntities()(0).getExpandedURL().toString()
 				val tags = status.getHashtagEntities().map(_.getText()).toSet
 				
 				tweets += new Tweet(id, url, tags)
