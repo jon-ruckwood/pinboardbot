@@ -11,8 +11,8 @@ resolvers ++= Seq(
 
 
 libraryDependencies ++= Seq(
-	"com.typesafe.akka" % "akka-actor" % "2.0.1",
-	"com.typesafe.akka" % "akka-testkit" % "2.0.1" % "test",
+	"com.typesafe.akka" % "akka-actor" % "2.0.3",
+	"com.typesafe.akka" % "akka-testkit" % "2.0.3" % "test",
 	"org.twitter4j" % "twitter4j-core" % "2.2.5",
 	"com.typesafe.config" % "config" % "0.3.0",
 	"org.scalatest" %% "scalatest" % "1.7.1" % "test",
