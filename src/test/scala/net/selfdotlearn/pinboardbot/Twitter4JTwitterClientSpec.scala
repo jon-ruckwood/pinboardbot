@@ -57,7 +57,6 @@ class Twitter4JTwitterClientSpec extends UnitTestSpec with TweetMatcher {
 
 			and("the mention matches the expected id, url and tags")
 
-			// TODO: Confusion over naming of tweet/mention. Reconcile this.
 			val tweet = mentions.head
 			tweet should have (
 				id (1),
