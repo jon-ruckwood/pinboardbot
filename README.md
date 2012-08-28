@@ -1,4 +1,5 @@
-Pinboard Bot
-========
+# pinboardbot
 
-TODO
+pinboardbot will be, hopefully, a convenient way of posting links to the popular [Pinboard](http://pinboard.in/) bookmarking service using Twitter. 
+
+To save a link to your account you tweet it to the bot and it will do the work, with hashtags being transformed into Pinboard tags along the way!
