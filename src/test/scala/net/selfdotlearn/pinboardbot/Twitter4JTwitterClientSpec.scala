@@ -1,10 +1,10 @@
 package net.selfdotlearn.pinboardbot
 
 import scala.collection.immutable
-import org.mockito.{BDDMockito, Mockito}
+import org.mockito.{ BDDMockito, Mockito }
 import org.mockito.Matchers._
 
-import twitter4j.{Twitter, ResponseList, Paging, Status}
+import twitter4j.{ Twitter, ResponseList, Paging, Status }
 
 import net.selfdotlearn.pinboardbot.twitter.Twitter4JTwitterClient
 import net.selfdotlearn.pinboardbot.test.Specs.UnitTestSpec

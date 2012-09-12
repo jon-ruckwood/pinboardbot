@@ -3,22 +3,26 @@ package net.selfdotlearn.pinboardbot
 import org.scalatest.FunSpec
 import org.scalatest.GivenWhenThen
 import org.scalatest.BeforeAndAfterAll
-import org.mockito.{BDDMockito, Mockito}
+import org.mockito.{ BDDMockito, Mockito }
 import org.mockito.Matchers._
 
-import akka.testkit.{TestKit, TestActorRef, ImplicitSender}
-import akka.actor.{Actor, ActorSystem, Props}
+import akka.testkit.{ TestKit, TestActorRef, ImplicitSender }
+import akka.actor.{ Actor, ActorSystem, Props }
 
 import net.selfdotlearn.pinboardbot.test.Values._
 import net.selfdotlearn.pinboardbot.test.Specs.UnitTestSpec
 
-import net.selfdotlearn.pinboardbot.twitter.{TwitterClient, Tweet}
-import net.selfdotlearn.pinboardbot.Messages.{FetchMentions, Mention}
+import net.selfdotlearn.pinboardbot.twitter.{ TwitterClient, Tweet }
+import net.selfdotlearn.pinboardbot.Messages.{ FetchMentions, Mention }
 
 class TwitterActorSpec extends TestKit(ActorSystem()) with ImplicitSender with UnitTestSpec with BeforeAndAfterAll {
 	
 	val twitterClient = mock[TwitterClient]
 	val twitterActorRef = TestActorRef(new TwitterActor(twitterClient))
+
+	override def afterAll {
+    	system.shutdown()
+  	}
 
 	describe("TwitterActor") {
 		it("Should not send any Mentions") {
@@ -120,11 +124,9 @@ class TwitterActorSpec extends TestKit(ActorSystem()) with ImplicitSender with U
 			Mockito.verify(twitterClient).fetchMentions(lastTweetId)
 		}
 		
+		it("Should start fetching mentions from tweet id 1")  (pending)
+
 		// TODO: This should be an integration test/acceptance test
 		it("Should only get new mentions since last time it ran after restart") (pending)
 	}
-
-	override def afterAll {
-    	system.shutdown()
-  	}
 }

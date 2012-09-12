@@ -1,6 +1,6 @@
 package net.selfdotlearn.pinboardbot
 
-import twitter4j.{Twitter, TwitterFactory, Paging, Status}
+import twitter4j.{ Twitter, TwitterFactory, Paging, Status }
 import twitter4j.auth.AccessToken
 import com.typesafe.config.ConfigFactory
 import scala.collection.immutable

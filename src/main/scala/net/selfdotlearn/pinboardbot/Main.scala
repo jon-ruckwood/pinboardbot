@@ -3,7 +3,7 @@ package net.selfdotlearn.pinboardbot
 import akka.actor.ActorSystem
 import akka.actor.Props
 import akka.util.duration._
-import akka.actor.Actor
+import akka.actor.{ Actor, ActorLogging }
 import akka.actor.Cancellable
 import akka.event.Logging
 
@@ -17,9 +17,7 @@ object Main extends App {
 
 	val cancellable = system.scheduler.schedule(0 seconds,  10 seconds, master, PollTwitter) 
 
-	class Master extends Actor {
-		val log = Logging(context.system, this)
-
+	class Master extends Actor with ActorLogging {
 		val twitterActor = system.actorOf(Props(
 			new TwitterActor(TwitterClientFactory.get())), 
 			name = "twitterActor")

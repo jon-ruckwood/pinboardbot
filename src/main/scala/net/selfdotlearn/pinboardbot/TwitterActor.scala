@@ -1,17 +1,15 @@
 package net.selfdotlearn.pinboardbot
 
 import com.typesafe.config.ConfigFactory
-import akka.actor.Actor
-import akka.event.Logging
-import scala.collection.immutable
+import akka.actor.{ Actor, ActorLogging }
 
 import net.selfdotlearn.pinboardbot.twitter.TwitterClient
-import net.selfdotlearn.pinboardbot.Messages.{FetchMentions, Mention}
+import net.selfdotlearn.pinboardbot.Messages.{ FetchMentions, Mention }
 
-class TwitterActor(val twitterClient: TwitterClient) extends Actor {
-	val log = Logging(context.system, this)
+class TwitterActor(val twitterClient: TwitterClient) extends Actor with ActorLogging {
 
-	// TODO: Persistence of this value? Also, visibility
+	// TODO: Persistence of this value
+	// TODO: This value should start from 1
 	var lastTweetId : Long = 0
 
 	def receive = {
