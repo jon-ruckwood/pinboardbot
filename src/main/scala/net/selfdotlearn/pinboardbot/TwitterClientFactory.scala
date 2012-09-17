@@ -2,19 +2,24 @@ package net.selfdotlearn.pinboardbot
 
 import twitter4j.{ Twitter, TwitterFactory, Paging, Status }
 import twitter4j.auth.AccessToken
-import com.typesafe.config.ConfigFactory
+import org.slf4j.{Logger, LoggerFactory}
+import com.typesafe.config.Config
 import scala.collection.immutable
 import scala.collection.mutable
 import scala.collection.JavaConversions._
 
 package twitter {
-	class Tweet(val id: Long, val url: Option[String], val tags: Set[String])
+	class Tweet(val id: Long, val url: Option[String], val tags: Set[String]) {
+		override def toString = "Tweet[id='" + id + "']"
+	}
 
 	trait TwitterClient {
 		def fetchMentions(sinceTweetId: Long): immutable.List[Tweet]
 	}
 
 	class Twitter4JTwitterClient(val twitter: twitter4j.Twitter) extends TwitterClient {
+		private val log = LoggerFactory.getLogger(getClass)
+
 		override def fetchMentions(sinceTweetId: Long = 1) = {
 			val since = new Paging(sinceTweetId)
 			val mentions = twitter.getMentions(since)
@@ -29,8 +34,11 @@ package twitter {
 				}
 
 				val tags = status.getHashtagEntities().map(_.getText()).toSet
-				
-				tweets += new Tweet(id, url, tags)
+
+				val tweet = new Tweet(id, url, tags)
+				log.debug("Received: {}", tweet)
+
+				tweets += tweet
 			}
 			
 			tweets.toList
@@ -47,12 +55,11 @@ package twitter {
 	}
 
 	object TwitterClientFactory { 
-		def get() = {
-			val conf = ConfigFactory.load()
-			val oauthConsumerKey = conf.getString("oauthConsumerKey")
-			val oauthConsumerSecret = conf.getString("oauthConsumerSecret")
-			val userAccessToken = conf.getString("accessToken")
-			val userAccessTokenSecret = conf.getString("accessTokenSecret")	
+		def get(config: Config) = {
+			val oauthConsumerKey = config.getString("oauth-consumer-key")
+			val oauthConsumerSecret = config.getString("oauth-consumer-secret")
+			val userAccessToken = config.getString("access-token")
+			val userAccessTokenSecret = config.getString("access-token-secret")	
 
 			val twitter = new twitter4j.TwitterFactory().getInstance()
 			twitter.setOAuthConsumer(oauthConsumerKey, oauthConsumerSecret)

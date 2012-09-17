@@ -19,7 +19,7 @@ object Main extends App {
 
 	class Master extends Actor with ActorLogging {
 		val twitterActor = system.actorOf(Props(
-			new TwitterActor(TwitterClientFactory.get())), 
+			new TwitterActor(TwitterClientFactory.get(context.system.settings.config))), 
 			name = "twitterActor")
 		
 		def receive = {
