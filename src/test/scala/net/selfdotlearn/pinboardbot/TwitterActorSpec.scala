@@ -91,42 +91,55 @@ class TwitterActorSpec extends TestKit(ActorSystem()) with ImplicitSender with U
 			expectMsg(Mention(id = 1, url = "http://www.google.com", tags = Set()))
 		}
 
-		it("Should record the id of the last Tweet fetched") {
-			given("the twitter client returns mentions")
+		it("Should record the most recent id of all Tweets fetched") {
+			given("the twitter client returns mentions out of order")
 
 			BDDMockito.given(twitterClient.fetchMentions(anyLong())).willReturn(List(
 				new Tweet(id = 1, url = Some("http://www.google.com"), tags = Set("google", "search")),
-				new Tweet(id = 2, url = Some("http://www.github.com"), tags = Set("git", "social")),
-				new Tweet(id = 3, url = Some("http://www.twitter.com"), tags = Set("twitter", "social")))
+				new Tweet(id = 3, url = Some("http://www.github.com"), tags = Set("git", "social")),
+				new Tweet(id = 2, url = Some("http://www.twitter.com"), tags = Set("twitter", "social")))
 			)
 
 			when("a FetchTweets message is recieved")
 
 			twitterActorRef ! FetchMentions
 
-			then("the id of the last tweet is recorded")
+			then("the id of the tweet with the highest id is recorded")
 
-			assert(twitterActorRef.underlyingActor.lastTweetId == 3)
+			assert(twitterActorRef.underlyingActor.mostRecentTweetId == 3)
 		}
 
-		it("Should use the id of the last Tweet fetched when the next FetchMentions message is received") {
-			given("the id of the last Tweet fetched has been set")
+		it("Should use the id of the most recent Tweet fetched when the next FetchMentions message is received") {
+			given("the mostRecentTweetId has already been set")
 
-			val lastTweetId = 10
-			twitterActorRef.underlyingActor.lastTweetId = lastTweetId
+			val mostRecentTweetId = 4
+			twitterActorRef.underlyingActor.mostRecentTweetId = mostRecentTweetId
 
 			when("a FetchTweets message is recieved")
 
 			twitterActorRef ! FetchMentions
 
-			then("the id of the last tweet is used to fetch tweets")
+			then("the mostRecentTweetId is used to fetch tweets")
 
-			Mockito.verify(twitterClient).fetchMentions(lastTweetId)
+			Mockito.verify(twitterClient).fetchMentions(mostRecentTweetId)
 		}
-		
-		it("Should start fetching mentions from tweet id 1")  (pending)
 
-		// TODO: This should be an integration test/acceptance test
-		it("Should only get new mentions since last time it ran after restart") (pending)
+		it("Should record the most recent id of the given Tweets even when URLs are not present") {
+			given("the twitter client returns mentions without URLs")
+
+			BDDMockito.given(twitterClient.fetchMentions(anyLong())).willReturn(List(
+				new Tweet(id = 5, url = None, tags = Set()),
+				new Tweet(id = 7, url = None, tags = Set()),
+				new Tweet(id = 6, url = None, tags = Set()))
+			)
+
+			when("a FetchTweets message is recieved")
+
+			twitterActorRef ! FetchMentions
+
+			then("the tweet with the most recent id is recorded")
+
+			assert(twitterActorRef.underlyingActor.mostRecentTweetId == 7)
+		}		
 	}
 }

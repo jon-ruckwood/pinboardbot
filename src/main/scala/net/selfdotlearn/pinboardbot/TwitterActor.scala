@@ -9,19 +9,21 @@ import net.selfdotlearn.pinboardbot.Messages.{ FetchMentions, Mention }
 class TwitterActor(val twitterClient: TwitterClient) extends Actor with ActorLogging {
 
 	// TODO: Persistence of this value
-	var lastTweetId : Long = 1
+	var mostRecentTweetId : Long = 1
 
 	def receive = {
 		case FetchMentions ⇒ 
-			log.info("Fetching tweets from ID#{}", lastTweetId)
+			log.info("Fetching tweets from id: {}", mostRecentTweetId)
 
-			twitterClient.fetchMentions(sinceTweetId = lastTweetId).foreach { tweet => 
+			twitterClient.fetchMentions(sinceTweetId = mostRecentTweetId).foreach { tweet => 
 				tweet.url match {
-					case None ⇒ log.debug("No url present, dropping tweet {}", tweet.id)
+					case None ⇒ log.debug("No url present, dropping tweet id: {}", tweet.id)
 					case Some(url) ⇒ sender ! Mention(tweet.id, url, tweet.tags)
 				}	
 
-				lastTweetId = tweet.id	
+				if (tweet.id > mostRecentTweetId) {
+					mostRecentTweetId = tweet.id	
+				}
 			}
 		case _ ⇒ log.info("Received unknown message")
 	}

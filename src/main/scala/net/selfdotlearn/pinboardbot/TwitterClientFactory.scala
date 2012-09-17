@@ -9,9 +9,7 @@ import scala.collection.mutable
 import scala.collection.JavaConversions._
 
 package twitter {
-	class Tweet(val id: Long, val url: Option[String], val tags: Set[String]) {
-		override def toString = "Tweet[id='" + id + "']"
-	}
+	class Tweet(val id: Long, val url: Option[String], val tags: Set[String])
 
 	trait TwitterClient {
 		def fetchMentions(sinceTweetId: Long): immutable.List[Tweet]
@@ -34,11 +32,7 @@ package twitter {
 				}
 
 				val tags = status.getHashtagEntities().map(_.getText()).toSet
-
-				val tweet = new Tweet(id, url, tags)
-				log.debug("Received: {}", tweet)
-
-				tweets += tweet
+				tweets += new Tweet(id, url, tags)
 			}
 			
 			tweets.toList
