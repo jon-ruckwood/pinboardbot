@@ -24,7 +24,7 @@ package twitter {
 			val since = new Paging(sinceTweetId)
 			val mentions = twitter.getMentions(since)
 			val tweets = new mutable.ListBuffer[Tweet]
-			mentions.foreach { status : Status =>
+			mentions.foreach { status : Status ⇒
 				val id = status.getId()
 
 				val url = if (hasUrls(status)) {

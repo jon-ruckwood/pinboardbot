@@ -23,9 +23,9 @@ object Main extends App {
 			name = "twitterActor")
 		
 		def receive = {
-			case PollTwitter => twitterActor ! FetchMentions
-			case Mention(id, url, tags) => log.info("Recieved mention {}, {}, {}", id, url, tags) 
-			case _ => log.info("Received unknown message")
+			case PollTwitter ⇒ twitterActor ! FetchMentions
+			case Mention(id, url, tags) ⇒ log.info("Recieved mention {}, {}, {}", id, url, tags) 
+			case _ ⇒ log.info("Received unknown message")
 		}
 	}
 }
