@@ -1,4 +1,4 @@
-# pinboardbot [![Build Status](https://secure.travis-ci.org/jon-ruckwood/pinboardbot.png)](http://travis-ci.org/jon-ruckwood/pinboardbot])
+# pinboardbot [![Build Status](https://secure.travis-ci.org/jon-ruckwood/pinboardbot.png)](http://travis-ci.org/jon-ruckwood/pinboardbot)
 
 pinboardbot will be, hopefully, a convenient way of posting links to the popular [Pinboard](http://pinboard.in/) bookmarking service using Twitter. 
 
