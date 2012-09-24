@@ -16,8 +16,6 @@ package pinboard {
 		private val log = LoggerFactory.getLogger(getClass)
 
 		override def add(bookmark: Bookmark) = {
-			val url = endpoint + "/posts/add" 
-
 			val result = Http.get(endpoint + "/posts/add")
 				.params("auth_token"	-> userApiToken,
 						"url" 			-> bookmark.url,
