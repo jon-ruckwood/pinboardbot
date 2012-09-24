@@ -25,6 +25,5 @@ class TwitterActor(val twitterClient: TwitterClient) extends Actor with ActorLog
 					mostRecentTweetId = tweet.id	
 				}
 			}
-		case _ ⇒ log.info("Received unknown message")
 	}
 }

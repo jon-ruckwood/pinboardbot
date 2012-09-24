@@ -5,7 +5,6 @@ import akka.actor.Props
 import akka.util.duration._
 import akka.actor.{ Actor, ActorLogging }
 import akka.actor.Cancellable
-import akka.event.Logging
 
 import net.selfdotlearn.pinboardbot.twitter.TwitterClientFactory
 import net.selfdotlearn.pinboardbot.Messages._
@@ -21,11 +20,12 @@ object Main extends App {
 		val twitterActor = system.actorOf(Props(
 			new TwitterActor(TwitterClientFactory.get(context.system.settings.config))), 
 			name = "twitterActor")
+
+		val pinboardActor = system.actorOf(Props[PinboardActor], name = "pinboardActor")
 		
 		def receive = {
 			case PollTwitter ⇒ twitterActor ! FetchMentions
-			case Mention(id, url, tags) ⇒ log.info("Recieved mention {}, {}, {}", id, url, tags) 
-			case _ ⇒ log.info("Received unknown message")
+			case mention: Mention ⇒ pinboardActor ! mention 
 		}
 	}
 }
