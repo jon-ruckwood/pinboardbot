@@ -6,7 +6,7 @@ import akka.actor.{ Actor, ActorLogging }
 import net.selfdotlearn.pinboardbot.twitter.TwitterClient
 import net.selfdotlearn.pinboardbot.Messages.{ FetchMentions, Mention }
 
-class TwitterActor(val twitterClient: TwitterClient) extends Actor with ActorLogging {
+class TwitterActor(private val twitterClient: TwitterClient) extends Actor with ActorLogging {
 
 	// TODO: Persistence of this value
 	var mostRecentTweetId : Long = 1

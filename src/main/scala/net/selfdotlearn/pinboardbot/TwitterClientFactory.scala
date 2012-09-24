@@ -2,7 +2,6 @@ package net.selfdotlearn.pinboardbot
 
 import twitter4j.{ Twitter, TwitterFactory, Paging, Status }
 import twitter4j.auth.AccessToken
-import org.slf4j.{Logger, LoggerFactory}
 import com.typesafe.config.Config
 import scala.collection.immutable
 import scala.collection.mutable
@@ -15,9 +14,7 @@ package twitter {
 		def fetchMentions(sinceTweetId: Long): immutable.List[Tweet]
 	}
 
-	class Twitter4JTwitterClient(val twitter: twitter4j.Twitter) extends TwitterClient {
-		private val log = LoggerFactory.getLogger(getClass)
-
+	class Twitter4JTwitterClient(private val twitter: twitter4j.Twitter) extends TwitterClient {
 		override def fetchMentions(sinceTweetId: Long = 1) = {
 			val since = new Paging(sinceTweetId)
 			val mentions = twitter.getMentions(since)

@@ -7,6 +7,7 @@ import akka.actor.{ Actor, ActorLogging }
 import akka.actor.Cancellable
 
 import net.selfdotlearn.pinboardbot.twitter.TwitterClientFactory
+import net.selfdotlearn.pinboardbot.pinboard.PinboardClientFactory
 import net.selfdotlearn.pinboardbot.Messages._
 
 object Main extends App {
@@ -21,7 +22,9 @@ object Main extends App {
 			new TwitterActor(TwitterClientFactory.get(context.system.settings.config))), 
 			name = "twitterActor")
 
-		val pinboardActor = system.actorOf(Props[PinboardActor], name = "pinboardActor")
+		val pinboardActor = system.actorOf(Props(
+			new PinboardActor(PinboardClientFactory.get(context.system.settings.config))), 
+			name = "pinboardActor")
 		
 		def receive = {
 			case PollTwitter ⇒ twitterActor ! FetchMentions
