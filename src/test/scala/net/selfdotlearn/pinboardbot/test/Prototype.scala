@@ -81,7 +81,8 @@ object Prototype {
 		val urlEntities = new mutable.ListBuffer[URLEntity]
 		urls.foreach { url =>
 			val entity = new URLEntity {
-				override def getExpandedURL() = new jn.URL(url)
+        override def getText() = url
+				override def getExpandedURL() = url
 				override def getDisplayURL() = throw new jl.UnsupportedOperationException()
 				override def getEnd() = throw new jl.UnsupportedOperationException()
 				override def getStart() = throw new jl.UnsupportedOperationException()

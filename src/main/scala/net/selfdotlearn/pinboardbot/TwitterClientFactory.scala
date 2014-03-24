@@ -17,7 +17,7 @@ package twitter {
 	class Twitter4JTwitterClient(private val twitter: twitter4j.Twitter) extends TwitterClient {
 		override def fetchMentions(sinceTweetId: Long = 1) = {
 			val since = new Paging(sinceTweetId)
-			val mentions = twitter.getMentions(since)
+			val mentions = twitter.getMentionsTimeline(since)
 			val tweets = new mutable.ListBuffer[Tweet]
 			mentions.foreach { status : Status ⇒
 				val id = status.getId()

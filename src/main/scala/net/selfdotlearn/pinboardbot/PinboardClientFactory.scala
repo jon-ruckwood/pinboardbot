@@ -1,7 +1,7 @@
 package net.selfdotlearn.pinboardbot
 
 import com.typesafe.config.Config
-import org.slf4j.{Logger, LoggerFactory}
+import org.slf4j.LoggerFactory
 import scalaj.http.{Http, HttpOptions}
 
 package pinboard {
@@ -25,7 +25,8 @@ package pinboard {
 				.option(HttpOptions.readTimeout(5000))
 				.asString
 
-			log.info("Result of adding '{}' was: {}", bookmark.url, result)
+      // TODO: Compilation error, review using slf4j directly
+      //log.info("Result of adding '{}' was: {}", bookmark.url, result)
 		}
 	}
 

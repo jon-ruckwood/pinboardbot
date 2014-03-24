@@ -1,16 +1,18 @@
 package net.selfdotlearn.pinboardbot
 
+import scala.concurrent.duration._
+
 import akka.actor.ActorSystem
 import akka.actor.Props
-import akka.util.duration._
 import akka.actor.{ Actor, ActorLogging }
-import akka.actor.Cancellable
 
 import net.selfdotlearn.pinboardbot.twitter.TwitterClientFactory
 import net.selfdotlearn.pinboardbot.pinboard.PinboardClientFactory
 import net.selfdotlearn.pinboardbot.Messages._
 
 object Main extends App {
+
+  import system.dispatcher
 
 	val system = ActorSystem("PinboardBotSystem")
 	val master = system.actorOf(Props[Master], name = "master")
